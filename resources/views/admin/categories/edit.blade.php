@@ -3,11 +3,11 @@
 @section('content')
 
     <div class="container">
-        <h3>Nova Categoria</h3>
+        <h3>Editando Categoria: {{ $category->name }}</h3>
 
         @include('errors._check')
 
-        {!! Form::open(['route'=>'admin.categories.store']) !!}
+        {!! Form::model($category, ['route'=>['admin.categories.update', $category->id]]) !!}
 
         @include('admin.categories._form')
         <div class="form-group">

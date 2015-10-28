@@ -7,7 +7,7 @@
 
 
 
-        <a href="#" class="btn btn-default">Nova categoria</a>
+        <a href="{{ route('admin.categories.create') }}" class="btn btn-default">Nova categoria</a>
         <br><br>
         <table class="table table-bordered">
             <thead>
@@ -22,7 +22,9 @@
             <tr>
                 <td>{{ $category->id  }}</td>
                 <td>{{ $category->name  }}</td>
-                <td></td>
+                <td>
+                    <a href="{{ route('admin.categories.edit', ['id'=>$category->id]) }}" title="" class="btn btn-default btn-sm">edit</a>
+                </td>
             </tr>
             @endforeach
             </tbody>

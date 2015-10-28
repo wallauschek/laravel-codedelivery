@@ -15,6 +15,30 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin/categories', ['as'=>'admin.categories.index', 'uses'=>'CategoriesController@index']);
-Route::get('admin/categories/create', ['as'=>'admin.categories.create', 'uses'=>'CategoriesController@create']);
-Route::post('admin/categories/store', ['as'=>'admin.categories.store', 'uses'=>'CategoriesController@store']);
+Route::group(['prefix'=>'admin', 'middleware'=>'auth.checkRole', 'as'=>'admin.'], function(){
+	Route::group(['prefix'=>'categories','as'=>'categories.'], function(){
+		Route::get('', ['as'=>'index', 'uses'=>'CategoriesController@index']);
+		Route::get('create', ['as'=>'create', 'uses'=>'CategoriesController@create']);
+		Route::post('store', ['as'=>'store', 'uses'=>'CategoriesController@store']);
+		Route::get('{id}/edit', ['as'=>'edit', 'uses'=>'CategoriesController@edit']);
+		Route::post('{id}/update', ['as'=>'update', 'uses'=>'CategoriesController@update']);
+	});
+
+	Route::group(['prefix'=>'products','as'=>'products.'], function(){
+		Route::get('', ['as'=>'index', 'uses'=>'ProductsController@index']);
+		Route::get('create', ['as'=>'create', 'uses'=>'ProductsController@create']);
+		Route::post('store', ['as'=>'store', 'uses'=>'ProductsController@store']);
+		Route::get('{id}/edit', ['as'=>'edit', 'uses'=>'ProductsController@edit']);
+		Route::post('{id}/update', ['as'=>'update', 'uses'=>'ProductsController@update']);
+		Route::get('{id}/destroy', ['as'=>'destroy', 'uses'=>'ProductsController@destroy']);
+	});
+
+	Route::group(['prefix'=>'clients','as'=>'clients.'], function(){
+		Route::get('', ['as'=>'index', 'uses'=>'ClientsController@index']);
+		Route::get('create', ['as'=>'create', 'uses'=>'ClientsController@create']);
+		Route::post('store', ['as'=>'store', 'uses'=>'ClientsController@store']);
+		Route::get('{id}/edit', ['as'=>'edit', 'uses'=>'ClientsController@edit']);
+		Route::post('{id}/update', ['as'=>'update', 'uses'=>'ClientsController@update']);
+		Route::get('{id}/destroy', ['as'=>'destroy', 'uses'=>'ClientsController@destroy']);
+	});
+});
