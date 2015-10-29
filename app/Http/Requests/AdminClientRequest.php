@@ -24,9 +24,9 @@ class AdminClientRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'required|min:3',
-            'email' => 'required|email',
-            'password' => 'required|min:6|same:repassword'  ,
+            'user.name' => 'required|min:3',
+            'user.email' => 'required|email',
+            //'password' => 'required|min:6|same:repassword'  ,
 
             'phone' => 'required',
             'address' => 'required',

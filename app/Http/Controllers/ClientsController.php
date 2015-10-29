@@ -8,7 +8,7 @@ use CodeDelivery\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use CodeDelivery\Http\Requests;
 use CodeDelivery\Http\Controllers\Controller;
-use CodeDelivery\Models\User;
+use CodeDelivery\Services\ClientService;
 
 class ClientsController extends Controller
 {
@@ -17,9 +17,9 @@ class ClientsController extends Controller
      */
     private $userRepository;
 
-    public function __construct(ClientRepository $repository, UserRepository $userRepository){
+    public function __construct(ClientRepository $repository, ClientService $clientService){
         $this->repository = $repository;
-        $this->userRepository = $userRepository;
+        $this->clientService = $clientService;
     }
 
     public function index(){
@@ -37,22 +37,8 @@ class ClientsController extends Controller
 
     public function store(AdminClientRequest $request){
 
-        $user = $this->userRepository->create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
-        ]);
-
-        $this->repository->create([
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'city' => $request->city,
-            'state' => $request->state,
-            'zipcode' => $request->zipcode,
-            'user_id' => $user->id
-        ]);
-
-        //dd($user);
+        $data = $request->all();
+        $this->clientService->create($data);
 
         return redirect()->route('admin.clients.index');
 
@@ -68,25 +54,29 @@ class ClientsController extends Controller
     public function update(AdminClientRequest $request, $id){
 
 
-        $client = $this->repository->update([
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'city' => $request->city,
-            'state' => $request->state,
-            'zipcode' => $request->zipcode,
-            'user_id' => $id
-        ], $id);
+        // $client = $this->repository->update([
+        //     'phone' => $request->phone,
+        //     'address' => $request->address,
+        //     'city' => $request->city,
+        //     'state' => $request->state,
+        //     'zipcode' => $request->zipcode,
+        //     'user_id' => $id
+        // ], $id);
 
-        $fields = [
-            'name' => $request->name,
-            'email' => $request->email
-        ];
+        // $fields = [
+        //     'name' => $request->name,
+        //     'email' => $request->email
+        // ];
 
-        if($request->password<>""){
-            $fields['password'] =  bcrypt($request->password);
-        }
+        // if($request->password<>""){
+        //     $fields['password'] =  bcrypt($request->password);
+        // }
 
-        $this->userRepository->update($fields, $client->user->id);
+        // $this->userRepository->update($fields, $client->user->id);
+        // 
+        
+        $data = $request->all();
+        $this->clientService->update($data, $id);
 
         return redirect()->route('admin.clients.index');
     }

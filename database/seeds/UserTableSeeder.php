@@ -31,5 +31,9 @@ class UserTableSeeder extends Seeder
             'role'=> 'admin',
             'remember_token'=> str_random(10)
         ]);
+
+        factory(User::class, 3)->create([
+            'role'=> 'deliveryman',
+        ]);
     }
 }
