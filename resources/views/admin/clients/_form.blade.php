@@ -1,12 +1,12 @@
 
  		<div class="form-group">
             {!! Form::label('name', 'Nome:') !!}
-            {!! Form::text('name', null, ['class'=>'form-control']) !!}
+            {!! Form::text('name', isset($client)?$client->user->name:'', ['class'=>'form-control']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('email', 'E-mail:') !!}
-            {!! Form::text('email', null, ['class'=>'form-control']) !!}
+            {!! Form::text('email', isset($client)?$client->user->email:'', ['class'=>'form-control']) !!}
         </div>
 
         <div class="form-group">
@@ -21,25 +21,25 @@
 
         <div class="form-group">
             {!! Form::label('phone', 'Telefone:') !!}
-            {!! Form::text('phone', null, ['class'=>'form-control']) !!}
+            {!! Form::text('phone', isset($client)?$client->phone:'', ['class'=>'form-control']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('address', 'Logradouro:') !!}
-            {!! Form::text('address', null, ['class'=>'form-control']) !!}
+            {!! Form::text('address', isset($client)?$client->address:'', ['class'=>'form-control']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('city', 'Cidade:') !!}
-            {!! Form::text('city', null, ['class'=>'form-control']) !!}
+            {!! Form::text('city', isset($client)?$client->city:'', ['class'=>'form-control']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('state', 'Estado:') !!}
-            {!! Form::text('state', null, ['class'=>'form-control']) !!}
+            {!! Form::text('state', isset($client)?$client->state:'', ['class'=>'form-control']) !!}
         </div>
 
         <div class="form-group">
             {!! Form::label('zipcode', 'CEP:') !!}
-            {!! Form::text('zipcode', null, ['class'=>'form-control']) !!}
+            {!! Form::text('zipcode', isset($client)?$client->zipcode:'', ['class'=>'form-control']) !!}
         </div>

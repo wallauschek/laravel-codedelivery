@@ -7,7 +7,7 @@
 
         @include('errors._check')
 
-        {!! Form::model($client, ['route'=>['admin.clients.update', $client->id]]) !!}
+        {!! Form::open( ['route'=>['admin.clients.update', $client->id]]) !!}
 
         @include('admin.clients._form')
         <div class="form-group">
