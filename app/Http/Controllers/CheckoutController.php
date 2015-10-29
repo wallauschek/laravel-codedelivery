@@ -15,12 +15,12 @@ class CheckoutController extends Controller
     public function __construct(
         OrderRepository $repository,
         UserRepository $userRepository,
-        ProductRepository $ProductRepository
+        ProductRepository $productRepository
 
         ){
         $this->repository = $repository;
-        $this->UserRepository = $userRepository;
-        $this->ProductRepository = $productRepository;
+        $this->userRepository = $userRepository;
+        $this->productRepository = $productRepository;
     }
 
 
@@ -28,7 +28,7 @@ class CheckoutController extends Controller
 
         $products = $this->productRepository->lists();
 
-        return view('customer.order.create', compact('products'));
+        return view('customer.orders.create', compact('products'));
     }
 
    

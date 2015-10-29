@@ -69,3 +69,4 @@ Route::group(['prefix'=>'customer', 'as'=>'customer.'], function(){
 		// Route::get('{id}/edit', ['as'=>'edit', 'uses'=>'CheckoutController@edit']);
 		// Route::post('{id}/update', ['as'=>'update', 'uses'=>'CheckoutController@update']);
 	});
+});
