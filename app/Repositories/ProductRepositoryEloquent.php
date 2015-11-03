@@ -14,6 +14,11 @@ use CodeDelivery\Models\Product;
 class ProductRepositoryEloquent extends BaseRepository implements ProductRepository
 {
 
+    public function lists(){
+        return $this->model->get(['id', 'name', 'price']);
+    }
+
+
     /**
      * Specify Model class name
      *
@@ -24,6 +29,8 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
         return Product::class;
     }
 
+
+
     /**
      * Boot up the repository, pushing criteria
      */
@@ -32,7 +39,5 @@ class ProductRepositoryEloquent extends BaseRepository implements ProductReposit
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    public function lists(){
-        return $this->model->lists('name', 'id');
-    }
+    
 }
