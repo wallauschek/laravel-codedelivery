@@ -82,10 +82,19 @@ Route::post('oauth/access_token', function() {
 
 Route::group(['prefix'=>'api', 'middleware'=>'oauth', 'as'=>'api.'], function(){
 
+	Route::get('authenticated',function(){
+		$id = Authorizer::getResourceOwnerId();
+        $client = CodeDelivery\Models\User::find($id);
+		return Response::json($client);
+	});
+
 	Route::group(['prefix'=>'client','middleware'=>'oauth.checkRole:client', 'as'=>'client.'], function(){
 
 		Route::resource('order', 'Api\Client\ClientCheckoutController', ['except'=>'create','edit','destroy']);
-
+		Route::patch('order/{id}/update-status',[
+			'uses'=>'Api\Deliveryman\DeliverymanCheckoutController@updateStatus',
+			'as'=>'order.update_status'
+		]);
 	});
 	Route::group(['prefix'=>'deliveryman', 'middleware'=>'oauth.checkRole:deliveryman', 'as'=>'deliveryman.'], function() {
 
