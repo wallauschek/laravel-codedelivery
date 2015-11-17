@@ -35,7 +35,7 @@ class ClientCheckoutController extends Controller
     }
 
 
-    public function store(Request $request){
+    public function store(Requests\CheckoutRequest $request){
         $data = $request->all();
         $id = Authorizer::getResourceOwnerId();
         $clientId = $this->userRepository->find($id)->client->id;
@@ -48,10 +48,10 @@ class ClientCheckoutController extends Controller
 
     public function  show($store){
         $o = $this->repository->with(['client', 'items', 'cupom'])->find($store);
-        $o->items->each(function($item){
-            $item->product;
-        });
-        $o->client->user;
+        // $o->items->each(function($item){
+        //     $item->product;
+        // });
+        // $o->client->user;
 
         return $o;
     }
