@@ -12,6 +12,12 @@ use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
 class DeliverymanCheckoutController extends Controller
 {
+    private $repository;
+    private $userRepository;
+    private $service;
+
+    private $with = ['client','cupom','items'];
+
     public function __construct(
         OrderRepository $repository,
         UserRepository $userRepository,
@@ -25,8 +31,11 @@ class DeliverymanCheckoutController extends Controller
 
     public function index(){
         $id = Authorizer::getResourceOwnerId();
-        $orders = $this->repository->scopeQuery(function($query) use($id){
-            return $query->with('items')->where('user_deliveryman_id', '=', $id);
+        $orders = $this->repository
+            ->skipPresenter(false)
+            ->with($this->with)
+            ->scopeQuery(function($query) use($id){
+            return $query->where('user_deliveryman_id', '=', $id);
         })->paginate();
 
         return $orders;
@@ -37,14 +46,17 @@ class DeliverymanCheckoutController extends Controller
     public function  show($id){
         $idDeliveryman = Authorizer::getResourceOwnerId();
 
-        return $this->repository->getByIdAndDeliveryman($id, $idDeliveryman);
+        return $this->repository
+            ->skipPresenter(false)
+            ->with($this->with)
+            ->getByIdAndDeliveryman($id, $idDeliveryman);
     }
 
     public function updateStatus(Request $request, $id){
         $idDeliveryman = Authorizer::getResourceOwnerId();
         $order = $this->service->updateStatus($id,$idDeliveryman,$request->get('status'));
         if($order){
-            return $order;
+            return $this->repository->skipPresenter(false)->find($order->id);
         }
         abort(400,"Order não encoontrado");
     }

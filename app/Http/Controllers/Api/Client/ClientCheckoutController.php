@@ -12,6 +12,12 @@ use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
 class ClientCheckoutController extends Controller
 {
+    private $repository;
+    private $userRepository;
+    private $service;
+
+    private $with = ['client','cupom','items'];
+
     public function __construct(
         OrderRepository $repository,
         UserRepository $userRepository,
@@ -27,8 +33,11 @@ class ClientCheckoutController extends Controller
 
         $id= Authorizer::getResourceOwnerId();
         $clientId = $this->userRepository->find($id)->client->id;
-        $orders = $this->repository->scopeQuery(function($query) use($clientId){
-            return $query->with('items')->where('client_id', '=', $clientId);
+        $orders = $this->repository
+            ->skipPresenter(false)
+            ->with($this->with)
+            ->scopeQuery(function($query) use($clientId){
+            return $query->where('client_id', '=', $clientId);
         })->paginate();
 
         return $orders;
@@ -36,24 +45,26 @@ class ClientCheckoutController extends Controller
 
 
     public function store(Requests\CheckoutRequest $request){
+
         $data = $request->all();
         $id = Authorizer::getResourceOwnerId();
-        $clientId = $this->userRepository->find($id)->client->id;
+        $clientId = $this->userRepository
+            ->find($id)->client->id;
         $data['client_id'] = $clientId;
         $o = $this->service->create($data);
-        $o = $this->repository->with('items')->find($o->id);
+        return $this->repository
+            ->skipPresenter(false)
+            ->with($this->with)
+            ->find($o->id);
 
-        return $o;
     }
 
-    public function  show($store){
-        $o = $this->repository->with(['client', 'items', 'cupom'])->find($store);
-        // $o->items->each(function($item){
-        //     $item->product;
-        // });
-        // $o->client->user;
+    public function  show($id){
 
-        return $o;
+        return $this->repository
+            ->skipPresenter(false)
+            ->with($this->with)
+            ->find($id);
     }
 }
 
