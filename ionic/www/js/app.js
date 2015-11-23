@@ -17,3 +17,25 @@ angular.module('starter', ['ionic'])
     }
   });
 })
+
+    .config(function($stateProvider,$urlRouterProvider){
+      $stateProvider
+
+          .state('home',{
+            url: '/home',
+            templateUrl: 'templates/home.html'
+          })
+            .state('home.a',{
+              url: '/a',
+              templateUrl: 'templates/home-a.html'
+            })
+            .state('home.b',{
+              url: '/b',
+              templateUrl: 'templates/home-b.html'
+            })
+          .state('main',{
+            url: '/main',
+            templateUrl: 'templates/main.html'
+          });
+      $urlRouterProvider.otherwise('home');
+    });
