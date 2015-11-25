@@ -82,11 +82,7 @@ Route::post('oauth/access_token', function() {
 
 Route::group(['prefix'=>'api', 'middleware'=>'oauth', 'as'=>'api.'], function(){
 
-	Route::get('authenticated',function(){
-		$id = Authorizer::getResourceOwnerId();
-        $client = CodeDelivery\Models\User::find($id);
-		return Response::json($client);
-	});
+	Route::get('authenticated',	['as'=>'authenticated', 'uses'=>'Api\UserController@show']);
 
 	Route::group(['prefix'=>'client','middleware'=>'oauth.checkRole:client', 'as'=>'client.'], function(){
 

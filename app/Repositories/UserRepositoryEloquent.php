@@ -2,9 +2,10 @@
 
 namespace CodeDelivery\Repositories;
 
+use Illuminate\Database\Eloquent\Collection as Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use CodeDelivery\Repositories\UserRepository;
 use CodeDelivery\Models\User;
 
 /**
@@ -13,6 +14,13 @@ use CodeDelivery\Models\User;
  */
 class UserRepositoryEloquent extends BaseRepository implements UserRepository
 {
+    
+    protected $skipPresenter = true;
+
+    public function getDeliverymen(){
+        return $this->model->where('role','deliveryman')->lists('name','id');
+    }
+
     /**
      * Specify Model class name
      *
@@ -31,7 +39,9 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
-    public function getDeliverymen(){
-        return $this->model->where('role','deliveryman')->lists('name','id');
+    public function presenter(){
+        return \CodeDelivery\Presenters\UserPresenter::class;
     }
+
+    
 }
